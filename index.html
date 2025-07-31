@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To the Power of Math!</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #000000, #2e2e2e);
+      font-family: 'Arial', sans-serif;
+      color: #FFFFFF;
+      text-align: center;
+      padding: 50px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      color: #FF77C9;
+      font-size: 48px;
+      margin-bottom: 20px;
+      animation: fadeIn 2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .form-container {
+      background-color: rgba(60, 10, 50, 0.9);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      width: 300px;
+    }
+    label {
+      color: #FF77C9;
+      font-size: 20px;
+      margin: 10px 0;
+      display: block;
+    }
+    input {
+      color: #3b0a33;
+      font-size: 20px;
+      padding: 10px;
+      margin: 10px 0;
+      width: calc(100% - 20px);
+      border: none;
+      border-radius: 5px;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    button {
+      background-color: #FF77C9;
+      border: none;
+      color: #FFFFFF;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #e160ae;
+      transform: scale(1.05);
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #FFDDEE;
+      animation: fadeIn 1s;
+    }
+    .footer {
+      margin-top: auto;
+      padding: 15px;
+      font-size: 14px;
+      color: #ffb3dd;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-top: 1px solid #ff77c97e;
+      width: 100%;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+    }
+    .footer span {
+      animation: fadeIn 2s ease-in-out;
+    }
+  </style>
+  <script>
+    var callAPI = (base, exponent) => {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({ "base": base, "exponent": exponent });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      fetch("https://gco6y6faq1.execute-api.eu-north-1.amazonaws.com/dev", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          let output;
+          try {
+            output = JSON.parse(result).body;
+          } catch (e) {
+            output = "Invalid result from server.";
+          }
+          document.getElementById('result').innerText = `Result: ${output}`;
+        })
+        .catch(error => {
+          console.log('error', error);
+          document.getElementById('result').innerText = "Something went wrong. Try again.";
+        });
+    }
+  </script>
+</head>
+<body>
+  <h1>TO THE POWER OF MATH!</h1>
+
+  <div class="form-container">
+    <form onsubmit="event.preventDefault(); callAPI(document.getElementById('base').value, document.getElementById('exponent').value);">
+      <label>Base number:</label>
+      <input type="text" id="base" required>
+      <label>Enter Exponent:</label>
+      <input type="text" id="exponent" required>
+      <button type="submit">CALCULATE</button>
+    </form>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <div class="footer">
+    <span>Jai Bardiya | Powered by AWS</span>
+  </div>
+</body>
+</html>
