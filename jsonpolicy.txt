@@ -1,4 +1,3 @@
-
 {
 "Version": "2012-10-17",
 "Statement": [
@@ -13,10 +12,7 @@
             "dynamodb:Query",
             "dynamodb:UpdateItem"
         ],
-        "Resource": "YOUR-TABLE-ARN"
+        "Resource": "PowerOfMathDatabase2"
     }
     ]
 }
-Execution Role Policy JSON.txt
-
-Displaying Execution Role Policy JSON.txt.
